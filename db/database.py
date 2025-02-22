@@ -15,18 +15,18 @@ class BaseDatabase(Base):
     updated_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now, nullable=False)
 
 class Database:
-    def __init__(self):
+    def __init__(self) -> None:
         self.engine = create_async_engine(
             "sqlite+aiosqlite:///db.sqlite3",
             connect_args={"check_same_thread": False}
         )
     
-    async def init(self):
+    async def init(self) -> None:
         async with self.engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
         await self.connect_db()
     
-    async def connect_db(self):
+    async def connect_db(self) -> AsyncSession:
         Session = sessionmaker(
             bind=self.engine,
             class_=AsyncSession,
