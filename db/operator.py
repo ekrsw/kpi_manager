@@ -2,8 +2,8 @@ from sqlalchemy import Column, String, select
 from .database import BaseDatabase, database
 
 
-class User(BaseDatabase):
-    __tablename__ = "users"
+class Operator(BaseDatabase):
+    __tablename__ = "operators"
     username = Column(String, nullable=False)
 
     @classmethod
@@ -25,7 +25,7 @@ class User(BaseDatabase):
         return
     
     @classmethod
-    async def get_all_users(cls) -> list["User"]:
+    async def get_all_users(cls) -> list["Operator"]:
         """全てのユーザーを取得する
 
         Returns:
