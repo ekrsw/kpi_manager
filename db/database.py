@@ -1,6 +1,9 @@
 import asyncio
 import datetime
-from sqlalchemy import Column, DateTime, Integer, String, create_engine
+from contextlib import asynccontextmanager
+from typing import AsyncGenerator
+
+from sqlalchemy import Column, DateTime, Integer
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -13,23 +16,51 @@ class BaseDatabase(Base):
     created_at = Column(DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now, nullable=False)
 
-# 非同期エンジンの作成
-engine = create_async_engine(
-    'sqlite+aiosqlite:///db.sqlite3',
-    connect_args={"check_same_thread": False}
-)
+class DatabaseManager:
+    def __init__(self, database_url: str = 'sqlite+aiosqlite:///db.sqlite3'):
+        self._database_url = database_url
+        self._engine = None
+        self._session_factory = None
 
-# 非同期セッションの作成
-async_session = sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-    autocommit=False,
-    autoflush=False
-)
+    def init(self) -> None:
+        """データベースエンジンとセッションファクトリを初期化"""
+        self._engine = create_async_engine(
+            self._database_url,
+            connect_args={"check_same_thread": False}
+        )
 
-# テーブルの初期化
-async def init_models():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+        self._session_factory = sessionmaker(
+            bind=self._engine,
+            class_=AsyncSession,
+            autocommit=False,
+            autoflush=False
+        )
 
-asyncio.run(init_models())
+    async def create_tables(self) -> None:
+        """データベーステーブルを作成"""
+        async with self._engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+
+    @asynccontextmanager
+    async def session(self) -> AsyncGenerator[AsyncSession, None]:
+        """非同期セッションを提供するコンテキストマネージャ"""
+        if not self._session_factory:
+            raise RuntimeError("DatabaseManager has not been initialized")
+
+        session = self._session_factory()
+        try:
+            yield session
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            raise
+        finally:
+            await session.close()
+
+    async def close(self) -> None:
+        """データベース接続をクリーンアップ"""
+        if self._engine:
+            await self._engine.dispose()
+
+# デフォルトのデータベースマネージャーインスタンスを作成
+db = DatabaseManager()
