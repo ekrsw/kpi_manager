@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, select
 from .database import BaseDatabase, database
 
 
@@ -25,9 +25,15 @@ class User(BaseDatabase):
         return
     
     @classmethod
-    async def get_all_user(cls):
+    async def get_all_users(cls) -> list["User"]:
+        """全てのユーザーを取得する
+
+        Returns:
+            list[User]: 全てのユーザーインスタンスのリスト
+        """
         await database.init()
         session = await database.connect_db()
-        users = session.query(User).all()
-        session.close()
+        result = await session.execute(select(User))
+        users = result.scalars().all()
+        await session.close()
         return users

@@ -2,8 +2,9 @@ import asyncio
 from db.user import User
 
 async def main():
-    # データベースの初期化
-    await User.create_user("test_user")
+    users = await User.get_all_users()
+    for user in users:
+        print(user.username)
 
 if __name__ == "__main__":
     asyncio.run(main())
