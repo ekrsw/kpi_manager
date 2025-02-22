@@ -36,4 +36,3 @@ class Database:
         return Session()
 
 database = Database()
-asyncio.run(database.init())

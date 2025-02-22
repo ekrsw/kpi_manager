@@ -1,4 +1,5 @@
 from db.user import User
+from db.operator import Operator
 from sqladmin import Admin, ModelView
 from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request
@@ -30,7 +31,16 @@ authentication_backend = AdminAuth(secret_key="fasdkjf;asldjf;asjdfa;lsdfj")
     
 
 class UserAdmin(ModelView, model=User):
-    column_list = [User.id, User.name, User.created_at, User.updated_at]
+    column_list = [User.id, User.username, User.created_at, User.updated_at]
+
+    def is_valible(self, request: Request) -> bool:
+        return True
+    
+    def is_accessible(self, request: Request) -> bool:
+        return True
+
+class OperatorAdmin(ModelView, model=Operator):
+    column_list = [Operator.id, Operator.name, Operator.ctstage_name, Operator.sweet_name, Operator.group, Operator.is_sv, Operator.is_active]
 
     def is_valible(self, request: Request) -> bool:
         return True
