@@ -16,6 +16,7 @@ class User(BaseDatabase):
         Returns:
             User: 作成されたユーザーインスタンス
         """
+        await database.init()
         session = await database.connect_db()
         user = User(username=username)
         session.add(user)
