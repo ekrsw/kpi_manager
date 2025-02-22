@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String
-from .database import BaseDatabase, db
+from .database import BaseDatabase, database
 
 
 class User(BaseDatabase):
@@ -16,11 +16,10 @@ class User(BaseDatabase):
         Returns:
             User: 作成されたユーザーインスタンス
         """
-        async with db.session() as session:
-            user = cls(username=username)
-            session.add(user)
-            await session.flush()
-            await session.refresh(user)
-            return user
-    
+        session = await database.connect_db()
+        user = User(username=username)
+        session.add(user)
+        await session.commit()
+        await session.flush(user)
+        return
     
