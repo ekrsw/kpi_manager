@@ -7,7 +7,7 @@ class User(BaseDatabase):
     username = Column(String, nullable=False)
 
     @classmethod
-    async def create_user(cls, username: str) -> "User":
+    async def create_user(cls, username: str) -> None:
         """ユーザーを作成する
 
         Args:
@@ -21,6 +21,13 @@ class User(BaseDatabase):
         user = User(username=username)
         session.add(user)
         await session.commit()
-        await session.flush(user)
+        await session.close()
         return
     
+    @classmethod
+    async def get_all_user(cls):
+        await database.init()
+        session = await database.connect_db()
+        users = session.query(User).all()
+        session.close()
+        return users
