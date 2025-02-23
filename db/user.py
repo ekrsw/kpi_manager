@@ -4,7 +4,7 @@ from .database import BaseDatabase, database
 
 class User(BaseDatabase):
     __tablename__ = "users"
-    username = Column(String, nullable=False)
+    username = Column(String, nullable=False, index=True)
 
     @classmethod
     async def create_user(cls, username: str) -> None:

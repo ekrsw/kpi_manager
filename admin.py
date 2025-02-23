@@ -31,7 +31,9 @@ authentication_backend = AdminAuth(secret_key="fasdkjf;asldjf;asjdfa;lsdfj")
     
 
 class UserAdmin(ModelView, model=User):
-    column_list = [User.id, User.username, User.created_at, User.updated_at]
+    name_plural = "Users"
+    column_list = "__all__"
+    column_searchable_list = [User.username]
 
     def is_valible(self, request: Request) -> bool:
         return True
@@ -40,10 +42,10 @@ class UserAdmin(ModelView, model=User):
         return True
 
 class OperatorAdmin(ModelView, model=Operator):
-    column_list = "__all__"
-    column_searchable_list = [Operator.name, Operator.ctstage_name, Operator.sweet_name]
+    name_plural = "Operators"
+    column_list = ["id", "name", "ctstage_name", "sweet_name", "group", "is_sv", "is_active", "created_at", "updated_at"]
+    column_searchable_list = [Operator.name]
     column_sortable_list = [Operator.group, Operator.is_sv, Operator.is_active]
-    column_name = ["ID", "氏名", "CTStage名", "Sweet名", "グループ", "SV", "active"]
 
     def is_valible(self, request: Request) -> bool:
         return True

@@ -4,7 +4,7 @@ from .database import BaseDatabase, database
 
 class Operator(BaseDatabase):
     __tablename__ = "operators"
-    name = Column(String, nullable=False)
+    name = Column(String, nullable=False, index=True)
     ctstage_name = Column(String)
     sweet_name = Column(String)
     group = Column(Integer)
