@@ -4,11 +4,11 @@ from .database import BaseDatabase, database
 
 class Operator(BaseDatabase):
     __tablename__ = "operators"
-    name = Column(String, nullable=False, index=True)
-    ctstage_name = Column(String)
-    sweet_name = Column(String)
-    group = Column(Integer)
-    is_sv = Column(Boolean, nullable=False)
+    name = Column(String, nullable=False, index=True, comment='氏名')
+    ctstage_name = Column(String, comment='CTStage名')
+    sweet_name = Column(String, comment='Sweet名')
+    group = Column(Integer, comment='グループ')
+    is_sv = Column(Boolean, nullable=False, comment='SV')
     is_active = Column(Boolean, nullable=False)
 
     @classmethod
