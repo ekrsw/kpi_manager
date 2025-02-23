@@ -17,7 +17,7 @@ class Operator(BaseDatabase):
                               name: str,
                               ctstage_name: str,
                               sweet_name: str,
-                              group: int,
+                              group_id: int,
                               is_sv: bool=False,
                               is_active: bool=True) -> None:
         """オペレーターを新規作成する
@@ -33,7 +33,7 @@ class Operator(BaseDatabase):
         operator = cls(name=name,
                        ctstage_name=ctstage_name,
                        sweet_name=sweet_name,
-                       group=group,
+                       group_id=group_id,
                        is_sv=is_sv,
                        is_active=is_active)
         session.add(operator)

@@ -48,6 +48,8 @@ class OperatorAdmin(ModelView, model=Operator):
     column_list = "__all__"
     column_searchable_list = [Operator.name]
     column_sortable_list = [Operator.group_id, Operator.is_sv, Operator.is_active]
+    form_columns = ["name", "ctstage_name", "sweet_name", "group_id", "is_sv", "is_active"]
+    form_include_pk = True
 
     def is_valible(self, request: Request) -> bool:
         return True
