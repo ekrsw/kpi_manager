@@ -1,5 +1,7 @@
 from db.user import User
 from db.operator import Operator
+from db.group import Group
+from db.KPI import KPI
 from sqladmin import Admin, ModelView
 from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request
@@ -43,9 +45,33 @@ class UserAdmin(ModelView, model=User):
 
 class OperatorAdmin(ModelView, model=Operator):
     name_plural = "Operators"
-    column_list = ["id", "name", "ctstage_name", "sweet_name", "group", "is_sv", "is_active", "created_at", "updated_at"]
+    column_list = "__all__"
     column_searchable_list = [Operator.name]
-    column_sortable_list = [Operator.group, Operator.is_sv, Operator.is_active]
+    column_sortable_list = [Operator.group_id, Operator.is_sv, Operator.is_active]
+
+    def is_valible(self, request: Request) -> bool:
+        return True
+    
+    def is_accessible(self, request: Request) -> bool:
+        return True
+    
+class GroupAdmin(ModelView, model=Group):
+    name_plural = "グループ"
+    column_list = [Group.id, Group.group_name]
+    column_searchable_list = [Group.group_name]
+    column_sortable_list = [Group.id]
+
+    def is_valible(self, request: Request) -> bool:
+        return True
+    
+    def is_accessible(self, request: Request) -> bool:
+        return True
+
+class KPIAdmin(ModelView, model=KPI):
+    name_plural = "KPI"
+    column_list = [KPI.created_at, KPI.total_calls]
+    column_searchable_list = [KPI.created_at]
+    column_sortable_list = [KPI.created_at]
 
     def is_valible(self, request: Request) -> bool:
         return True

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqladmin import Admin
-from admin import UserAdmin, OperatorAdmin, authentication_backend
+from admin import UserAdmin, OperatorAdmin, GroupAdmin, KPIAdmin, authentication_backend
 from db.database import database
 
 
@@ -27,6 +27,8 @@ app.add_middleware(
 admin = Admin(app=app, engine=database.engine, authentication_backend=authentication_backend, title="KPI Manager Admin")
 admin.add_view(UserAdmin)
 admin.add_view(OperatorAdmin)
+admin.add_view(GroupAdmin)
+admin.add_view(KPIAdmin)
 
 # テスト用のルートエンドポイント
 @app.get("/")

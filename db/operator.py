@@ -1,5 +1,6 @@
-from sqlalchemy import Boolean, Column, Integer, String, select
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, select
 from .database import BaseDatabase, database
+from db.group import Group
 
 
 class Operator(BaseDatabase):
@@ -7,7 +8,7 @@ class Operator(BaseDatabase):
     name = Column(String, nullable=False, index=True, comment='氏名')
     ctstage_name = Column(String, comment='CTStage名')
     sweet_name = Column(String, comment='Sweet名')
-    group = Column(Integer, comment='グループ')
+    group_id = Column(ForeignKey('group.id', ondelete='RESTRICT'))
     is_sv = Column(Boolean, nullable=False, comment='SV')
     is_active = Column(Boolean, nullable=False)
 
