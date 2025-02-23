@@ -3,7 +3,7 @@ from .database import BaseDatabase, database
 
 
 class User(BaseDatabase):
-    __tablename__ = "users"
+    __tablename__ = "user"
     username = Column(String, nullable=False, index=True)
 
     @classmethod

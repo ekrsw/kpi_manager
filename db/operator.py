@@ -4,11 +4,11 @@ from db.group import Group
 
 
 class Operator(BaseDatabase):
-    __tablename__ = "operators"
+    __tablename__ = "operator"
     name = Column(String, nullable=False, index=True, comment='氏名')
     ctstage_name = Column(String, comment='CTStage名')
     sweet_name = Column(String, comment='Sweet名')
-    group_id = Column(ForeignKey('group.id', ondelete='RESTRICT'))
+    group_id = Column(ForeignKey('group.id', ondelete='RESTRICT'), nullable=False, comment='グループID')
     is_sv = Column(Boolean, nullable=False, comment='SV')
     is_active = Column(Boolean, nullable=False)
 

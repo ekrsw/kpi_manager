@@ -33,7 +33,7 @@ authentication_backend = AdminAuth(secret_key="fasdkjf;asldjf;asjdfa;lsdfj")
     
 
 class UserAdmin(ModelView, model=User):
-    name_plural = "Users"
+    name_plural = "User"
     column_list = "__all__"
     column_searchable_list = [User.username]
 
@@ -44,7 +44,7 @@ class UserAdmin(ModelView, model=User):
         return True
 
 class OperatorAdmin(ModelView, model=Operator):
-    name_plural = "Operators"
+    name_plural = "Operator"
     column_list = "__all__"
     column_searchable_list = [Operator.name]
     column_sortable_list = [Operator.group_id, Operator.is_sv, Operator.is_active]

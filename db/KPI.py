@@ -3,7 +3,7 @@ from .database import BaseDatabase, database
 
 
 class KPI(BaseDatabase):
-    __tablename__ = "kpis"
+    __tablename__ = "KPI"
 
     # 着信関連
     total_calls = Column(Integer, nullable=False, comment='総着信数')
