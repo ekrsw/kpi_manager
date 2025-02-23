@@ -40,7 +40,10 @@ class UserAdmin(ModelView, model=User):
         return True
 
 class OperatorAdmin(ModelView, model=Operator):
-    column_list = [Operator.id, Operator.name, Operator.ctstage_name, Operator.sweet_name, Operator.group, Operator.is_sv, Operator.is_active]
+    column_list = "__all__"
+    column_searchable_list = [Operator.name, Operator.ctstage_name, Operator.sweet_name]
+    column_sortable_list = [Operator.group, Operator.is_sv, Operator.is_active]
+    column_name = ["ID", "氏名", "CTStage名", "Sweet名", "グループ", "SV", "active"]
 
     def is_valible(self, request: Request) -> bool:
         return True
